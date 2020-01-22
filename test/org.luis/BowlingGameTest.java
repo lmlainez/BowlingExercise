@@ -66,6 +66,42 @@ public class BowlingGameTest {
 
     }
 
+    @Test
+    public void doubleStrikeTest() throws Exception {
+        BowlingGame bowlingGame =  new BowlingGame();
+
+        //Round 1
+        bowlingGame.roll(10);
+
+        //Round 2
+        bowlingGame.roll(10);
+        assertEquals(30,bowlingGame.score());
+
+        bowlingGame.roll(2);
+        bowlingGame.roll(5);
+
+        assertEquals(44,bowlingGame.score());
+    }
+
+    @Test
+    public void tripleStrikeTest() throws Exception {
+        BowlingGame bowlingGame =  new BowlingGame();
+
+        //Round 1
+        bowlingGame.roll(10);
+
+        //Round 2
+        bowlingGame.roll(10);
+        assertEquals(30,bowlingGame.score());
+
+        bowlingGame.roll(10);
+        assertEquals(50,bowlingGame.score());
+
+        bowlingGame.roll(2);
+        bowlingGame.roll(5);
+        assertEquals(64,bowlingGame.score());
+
+    }
 
     @Test(expected = InvalidGameMoveException.class)
     public void playerThrowingTooManyTimesTest() throws Exception {
@@ -83,8 +119,6 @@ public class BowlingGameTest {
         BowlingGame bowlingGame =  new BowlingGame();
         bowlingGame.roll(12);
     }
-
-   
 
 
 }

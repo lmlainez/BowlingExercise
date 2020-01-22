@@ -40,7 +40,7 @@ public class BowlingGame {
 
             if(numberOfPinsThrownInThisRound == ALL_PINS) {
                 currentRound.setStrike(true);
-                roundNumber++;
+                nextRound();
             }
         }else{
             //Second time someone throws the ball in this round
@@ -54,8 +54,7 @@ public class BowlingGame {
                 rollCountsDouble = previousRound.isStrike() ;
             }
 
-            roundNumber++;
-            numberOfPinsThrownInThisRound = 0;
+            nextRound();
 
         }
         if(rollCountsDouble){
@@ -65,8 +64,13 @@ public class BowlingGame {
 
     }
 
+    private void nextRound(){
+        roundNumber++;
+        numberOfPinsThrownInThisRound = 0;
+    }
+
     public boolean isGameOver(){
-        return roundNumber>=MAX_ROUNDS;
+        return roundNumber >= MAX_ROUNDS;
     }
 
     private BowlingGameRound getPreviousRound(){
@@ -77,7 +81,6 @@ public class BowlingGame {
     }
 
 
-
     public int score(){
         int score=0;
         for(BowlingGameRound round : gameRounds){
@@ -85,4 +88,6 @@ public class BowlingGame {
         }
         return score;
     }
+
+
 }
