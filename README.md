@@ -31,6 +31,5 @@ bowlingGame.score();
 
 
 Notes: 
-Given the previous points system, it differs from the traditional Bowling game, in which if someone makes a strike, the score in 10 + the SCORE of the next round.
-In here, it is just the pins knocked down in the next 2 bowls.
-This mismatch makes it impossible to get the 300 perfect score.
+All test cases have been written using this site as source of truth:
+https://www.bowlinggenius.com/
