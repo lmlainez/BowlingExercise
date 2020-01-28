@@ -11,7 +11,13 @@ public class BowlingGame {
     private List<BowlingGameRound> gameRounds = new ArrayList(10);
     private int roundNumber = 0 ;
     private int numberOfPinsThrownInThisRound = 0;
+    private boolean firstRoll = true;
 
+    public BowlingGame(){
+        for(int i=0; i<MAX_ROUNDS ; i++){
+            gameRounds.add(new BowlingGameRound());
+        }
+    }
     public void roll(int noPins){
 
         if(isGameOver()){
@@ -22,26 +28,21 @@ public class BowlingGame {
             throw new InvalidGameMoveException("You can't throw more pins than the maximum");
         }
 
-        BowlingGameRound currentRound;
+        BowlingGameRound currentRound  = gameRounds.get(roundNumber);
         numberOfPinsThrownInThisRound += noPins;
 
         //First time someone throws the ball in this round
-        if(gameRounds.size() <= roundNumber){
-
-            currentRound =  new BowlingGameRound();
-            gameRounds.add(currentRound);
-
+        if(firstRoll){
+            currentRound.setFirstRoll(noPins);
+            firstRoll = false;
             if(numberOfPinsThrownInThisRound == BowlingGameRound.ALL_PINS) {
                 nextRound();
             }
-
-            currentRound.setFirstRoll(noPins);
         }else{
             //Second time someone throws the ball in this round
             currentRound = gameRounds.get(roundNumber);
-
-            nextRound();
             currentRound.setSecondRoll(noPins);
+            nextRound();
 
         }
 
@@ -50,6 +51,7 @@ public class BowlingGame {
     private void nextRound(){
         roundNumber++;
         numberOfPinsThrownInThisRound = 0;
+        firstRoll = true;
     }
 
     public boolean isGameOver(){
@@ -77,7 +79,7 @@ public class BowlingGame {
             }
 
             score += round.getFirstRoll() + round.getSecondRoll() + additionalPoints;
-            
+
             if(round.isStrike()){
                 strikeBonus = true;
             }else if(round.isHalfStrike()){
