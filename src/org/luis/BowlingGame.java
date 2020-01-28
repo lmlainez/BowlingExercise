@@ -6,7 +6,6 @@ import java.util.List;
 
 public class BowlingGame {
 
-    private static int ALL_PINS = 10;
     private static int MAX_ROUNDS = 10;
 
     private List<BowlingGameRound> gameRounds = new ArrayList(10);
@@ -19,48 +18,32 @@ public class BowlingGame {
             throw new InvalidGameMoveException("The game is over, you can't roll anymore");
         }
 
-        if(noPins > ALL_PINS){
+        if(noPins > BowlingGameRound.ALL_PINS){
             throw new InvalidGameMoveException("You can't throw more pins than the maximum");
         }
 
         BowlingGameRound currentRound;
-        boolean rollCountsDouble = false;
-        BowlingGameRound previousRound = getPreviousRound();
         numberOfPinsThrownInThisRound += noPins;
 
         //First time someone throws the ball in this round
         if(gameRounds.size() <= roundNumber){
 
-            if(previousRound != null){
-                rollCountsDouble = previousRound.isStrike() || previousRound.isHalfStrike();
-            }
-
             currentRound =  new BowlingGameRound();
             gameRounds.add(currentRound);
 
-            if(numberOfPinsThrownInThisRound == ALL_PINS) {
-                currentRound.setStrike(true);
+            if(numberOfPinsThrownInThisRound == BowlingGameRound.ALL_PINS) {
                 nextRound();
             }
+
+            currentRound.setFirstRoll(noPins);
         }else{
             //Second time someone throws the ball in this round
             currentRound = gameRounds.get(roundNumber);
 
-            if(numberOfPinsThrownInThisRound == ALL_PINS) {
-                currentRound.setHalfStrike(true);
-            }
-
-            if(previousRound != null){
-                rollCountsDouble = previousRound.isStrike() ;
-            }
-
             nextRound();
+            currentRound.setSecondRoll(noPins);
 
         }
-        if(rollCountsDouble){
-            previousRound.addScore(noPins);
-        }
-        currentRound.addScore(noPins);
 
     }
 
@@ -73,20 +56,49 @@ public class BowlingGame {
         return roundNumber >= MAX_ROUNDS;
     }
 
-    private BowlingGameRound getPreviousRound(){
-        if(roundNumber <= 0){
-            return null;
-        }
-        return gameRounds.get(roundNumber-1);
-    }
-
 
     public int score(){
+
         int score=0;
-        for(BowlingGameRound round : gameRounds){
-            score += round.getScore();
+        boolean strikeBonus = false;
+        boolean halfStrikeBonus = false;
+        for(int i=0 ; i < gameRounds.size(); i++){
+            BowlingGameRound round = gameRounds.get(i);
+            int additionalPoints=0;
+            if(strikeBonus){
+                additionalPoints = getStrikeAdditionalPoints(i);
+                strikeBonus=false;
+            }else if(halfStrikeBonus){
+                additionalPoints = getSpareAdditionalPoints(i);
+                halfStrikeBonus=false;
+            }else{
+                additionalPoints = 0;
+                halfStrikeBonus = strikeBonus = false;
+            }
+
+            score += round.getFirstRoll() + round.getSecondRoll() + additionalPoints;
+            
+            if(round.isStrike()){
+                strikeBonus = true;
+            }else if(round.isHalfStrike()){
+                halfStrikeBonus=true;
+            }
         }
+
         return score;
+    }
+
+    private int getSpareAdditionalPoints(int roundNumber){
+        return gameRounds.get(roundNumber).getFirstRoll();
+
+    }
+
+    private int getStrikeAdditionalPoints(int roundNumber){
+        BowlingGameRound nextRound =  gameRounds.get(roundNumber);
+        if (nextRound.isStrike()) {
+            return nextRound.getFirstRoll() + gameRounds.get(roundNumber+1).getFirstRoll();
+        }
+        return nextRound.getFirstRoll() + nextRound.getSecondRoll();
     }
 
 

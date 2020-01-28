@@ -3,24 +3,19 @@ package org.luis;
 
 public class BowlingGameRound {
 
+    public static int ALL_PINS = 10;
 
-
-    private int score = 0;
-
-
+    private int firstRoll = 0;
+    private int secondRoll = 0;
     private boolean isStrike;
     private boolean isHalfStrike;
 
     public boolean isStrike() {
-        return isStrike;
-    }
-
-    public void setStrike(boolean strike) {
-        isStrike = strike;
+        return firstRoll == ALL_PINS;
     }
 
     public boolean isHalfStrike() {
-        return isHalfStrike;
+        return (firstRoll+secondRoll) == ALL_PINS;
     }
 
     public void setHalfStrike(boolean halfStrike) {
@@ -28,13 +23,20 @@ public class BowlingGameRound {
 
     }
 
-    public int getScore() {
-        return score;
+    public int getFirstRoll() {
+        return firstRoll;
     }
 
+    public void setFirstRoll(int firstRoll) {
+        this.firstRoll = firstRoll;
+    }
 
-    public void addScore(int score) {
-        this.score += score;
+    public int getSecondRoll() {
+        return secondRoll;
+    }
+
+    public void setSecondRoll(int secondRoll) {
+        this.secondRoll = secondRoll;
     }
 
 }

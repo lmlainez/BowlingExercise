@@ -4,8 +4,70 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-
+//This test case has been designed using scores from here: https://www.bowlinggenius.com/
 public class BowlingGameTest {
+
+
+    @Test
+    public void testNoStrikes() throws Exception {
+        BowlingGame bowlingGame =  new BowlingGame();
+
+        //Round 1
+        bowlingGame.roll(4);
+        bowlingGame.roll(5);
+        assertEquals(9,bowlingGame.score());
+
+        //Round 2
+        bowlingGame.roll(4);
+        assertEquals(13,bowlingGame.score());
+        bowlingGame.roll(2);
+        assertEquals(15,bowlingGame.score());
+
+        //Round 3 - Strike
+        bowlingGame.roll(6);
+        bowlingGame.roll(3);
+
+        assertEquals(24,bowlingGame.score());
+
+        //Round 4
+        bowlingGame.roll(3);
+        bowlingGame.roll(5);
+        assertEquals(32,bowlingGame.score());
+
+        //Round 5
+        bowlingGame.roll(5);
+        bowlingGame.roll(1);
+        assertEquals(38,bowlingGame.score());
+
+        //Round 6
+        bowlingGame.roll(4);
+        bowlingGame.roll(2);
+        assertEquals(44,bowlingGame.score());
+
+        //Round 7
+        bowlingGame.roll(1);
+        bowlingGame.roll(2);
+        assertEquals(47,bowlingGame.score());
+
+        //Round 8
+        bowlingGame.roll(9);
+        bowlingGame.roll(0);
+        assertEquals(56,bowlingGame.score());
+
+        //Round 9
+        bowlingGame.roll(0);
+        bowlingGame.roll(8);
+        assertEquals(64,bowlingGame.score());
+
+        //Round 10
+        bowlingGame.roll(2);
+        bowlingGame.roll(5);
+        assertEquals(71,bowlingGame.score());
+
+        assertEquals(true,bowlingGame.isGameOver());
+
+
+    }
 
     @Test
     public void bowlingGameTest() throws Exception {
@@ -67,6 +129,28 @@ public class BowlingGameTest {
     }
 
     @Test
+    public void singleStrikeTest() throws Exception {
+        BowlingGame bowlingGame =  new BowlingGame();
+
+        //Round 1
+        bowlingGame.roll(10);
+
+        //Round 2
+        bowlingGame.roll(2);
+        bowlingGame.roll(5);
+        assertEquals(24,bowlingGame.score());
+
+        bowlingGame.roll(3);
+        bowlingGame.roll(3);
+        assertEquals(30,bowlingGame.score());
+
+        bowlingGame.roll(4);
+        bowlingGame.roll(1);
+        assertEquals(35,bowlingGame.score());
+
+    }
+
+    @Test
     public void doubleStrikeTest() throws Exception {
         BowlingGame bowlingGame =  new BowlingGame();
 
@@ -75,12 +159,15 @@ public class BowlingGameTest {
 
         //Round 2
         bowlingGame.roll(10);
-        assertEquals(30,bowlingGame.score());
 
+        //Round 3
         bowlingGame.roll(2);
         bowlingGame.roll(5);
 
-        assertEquals(44,bowlingGame.score());
+        bowlingGame.roll(6);
+        bowlingGame.roll(3);
+
+        assertEquals(55,bowlingGame.score());
     }
 
     @Test
@@ -92,14 +179,15 @@ public class BowlingGameTest {
 
         //Round 2
         bowlingGame.roll(10);
-        assertEquals(30,bowlingGame.score());
 
+        //Round 3
         bowlingGame.roll(10);
-        assertEquals(50,bowlingGame.score());
 
+        //Round 4
         bowlingGame.roll(2);
         bowlingGame.roll(5);
-        assertEquals(64,bowlingGame.score());
+
+        assertEquals(76,bowlingGame.score());
 
     }
 
